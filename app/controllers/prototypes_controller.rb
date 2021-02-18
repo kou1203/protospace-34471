@@ -1,6 +1,7 @@
 class PrototypesController < ApplicationController
    before_action :authenticate_user!, only: [:edit,:create, :destroy]
    before_action :move_to_index, only: [:edit, :destroy]
+   before_action :move_root, only: :new
    def index
       @prototypes = Prototype.all
    end 
@@ -33,9 +34,9 @@ class PrototypesController < ApplicationController
       prototype = Prototype.find(params[:id])
       prototype.update(prototype_params)
       if prototype.update(prototype_params)
-         redirect_to "/users/#{prototype.user_id}"
+         redirect_to prototype_path(prototype.id)
       else  
-         render :edit 
+         redirect_to edit_prototype_path(prototype.id)
       end 
    end
 
@@ -56,6 +57,12 @@ class PrototypesController < ApplicationController
      unless user_signed_in? && current_user.id == @prototype.user_id
         redirect_to root_path
      end 
+   end
+
+   def move_root 
+      unless user_signed_in? 
+         redirect_to root_path 
+      end 
    end
 
    
