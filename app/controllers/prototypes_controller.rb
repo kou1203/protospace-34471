@@ -6,15 +6,16 @@ class PrototypesController < ApplicationController
    end 
    def new 
       @prototype = Prototype.new
-     
    end 
+
    def create 
-      Prototype.create(prototype_params)
-      if Prototype.create
-         redirect_to root_path
-      else 
+      @prototype = Prototype.new(prototype_params)
+      if @prototype.save
+         redirect_to root_path 
+      else  
          render :new
-      end  
+      end 
+
    end 
 
    def show
@@ -25,10 +26,7 @@ class PrototypesController < ApplicationController
    end
 
    def edit 
-      @prototype = Prototype.find(params[:id])
-      
-
-      
+      @prototype = Prototype.find(params[:id])  
    end 
 
    def update 
